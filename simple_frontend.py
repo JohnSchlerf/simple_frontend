@@ -15,21 +15,14 @@ def group_files(list_of_files):
     Associates the recording with its screenshot, returns a
     list of dictionary objects
     '''
-    recordings = []
-    images = []
+    grouped_list = []
     for file in list_of_files:
         if '.mpg' in file:
             if '.png' in file[-4:]:
-                images.append(file)
-            elif '.mpg' in file[-4:]:
-                recordings.append(file)
-    grouped_list = []
-    # This is a very, very lazy & dumb way to do this.
-    for [recording, image] in zip(recordings, images):
-        grouped_list.append({
-            'recording': recording,
-            'screenshot': image
-            })
+                grouped_list.append({
+                    'recording': file.replace('.png',''),
+                    'screenshot': file
+                    })
     return grouped_list
 
 def get_image(file_name):
@@ -78,16 +71,16 @@ class MyFrontEnd:
         '''
         self.current_video += 1
         if self.current_video >= self.num_videos:
-            current_video -= self.num_videos
+            self.current_video -= self.num_videos
         self.photo_callback()
 
     def play_video(self):
         '''
         '''
-        command = "cvlc "
+        command = "vlc "
         current_mpg = self.grouped_files[self.current_video]['recording']
         command += os.path.join(RECORDING_FOLDER, current_mpg)
-        print command
+        os.system(command)
 
 if __name__=="__main__":
     MyFrontEnd()    
