@@ -244,6 +244,7 @@ class MyFrontEnd:
         command += os.path.join(RECORDING_FOLDER, current_mpg)
         command += " --play-and-exit vlc://quit"
 	self.description_panel.configure(text = "NOW PLAYING...")
+	self.root.update()
         print command
         os.system(command)
 
