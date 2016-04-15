@@ -103,9 +103,14 @@ def get_image(file_name, scale=2):
     '''
     Wrapper to load an image
     '''
-    the_image = Image.open(
-	os.path.join(RECORDING_FOLDER, file_name)
-	)
+    if os.path.exists(file_name):
+        the_image = Image.open(
+	    os.path.join(RECORDING_FOLDER, file_name)
+	    )
+    else:
+        the_image = Image.open(
+	    "/home/john/simple_frontend/blank_image.png"
+            )
     w, h = the_image.size
     new_size = (int(w*scale), int(h*scale))
     return ImageTk.PhotoImage(the_image.resize(new_size))
@@ -234,9 +239,12 @@ class MyFrontEnd:
         '''
         '''
         command = "vlc "
-        print self.grouped_files[self.current_video]
+        #print self.grouped_files[self.current_video]
         current_mpg = self.grouped_files[self.current_video]['recording']
         command += os.path.join(RECORDING_FOLDER, current_mpg)
+        command += " --play-and-exit vlc://quit"
+	self.description_panel.configure(text = "NOW PLAYING...")
+        print command
         os.system(command)
 
 if __name__=="__main__":
